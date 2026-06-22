@@ -154,39 +154,44 @@ colormatch/
 - **Persistence** behind a `PersistenceStore` protocol so the backing store (UserDefaults now, SwiftData/CloudKit later) can change without touching features.
 
 ### Testing
-- Unit tests: `ScoringEngine` (known color pairs → expected %), `ColorGenerator` (odd tile differs by exactly ΔE; same seed → same output), `DifficultyCurve` (monotonic), `DailySeed` (stable per date).
-- Snapshot/UI smoke tests for Home and each game screen (Phase 2).
+- No unit tests (out of scope).
 
 ---
 
 ## 5. Actionable Task Breakdown
 
-### Milestone 0 — Project setup
-- [ ] Reorganize project into the `App / Core / Features / Resources` folder structure.
-- [ ] Set deployment target to iOS 17, portrait-only, dark appearance default.
-- [ ] Add `AppColor` palette and `AppTypography` from §3.
-- [ ] Add reusable components: `PrimaryButton`, `Card`, `StatBadge`, `ColorTile`.
+### Milestone 0 — Project setup  ✅ DONE
+- [x] Create folder structure on disk: `App/`, `Core/DesignSystem/Components/`, `Core/Models/`, `Core/Services/`, `Core/Extensions/`, `Features/{Home,SpotOdd,MatchColor,Daily,Results,Settings}/`.
+- [x] Move `colormatchApp.swift` → `App/`; delete `ContentView.swift`.
+- [x] Portrait-only (`UIInterfaceOrientationPortrait`), dark appearance (`UIUserInterfaceStyle = Dark`), iPhone-only (`TARGETED_DEVICE_FAMILY = 1`) in project.pbxproj.
+- [x] Add `AppColor.swift` (all 10 palette tokens) in `Core/DesignSystem/`.
+- [x] Add `AppTypography.swift` (Display/Title/Body/Caption, SF rounded) in `Core/DesignSystem/`.
+- [x] Add reusable components in `Core/DesignSystem/Components/`: `PrimaryButton`, `Card`, `StatBadge`, `ColorTile`.
+- [x] `colormatchApp.swift` uses `.preferredColorScheme(.dark)` + stub `HomeView`.
 
-### Milestone 1 — Core engine (no UI)
-- [ ] `Color+Hex` and `Color → CIELAB` conversion extensions.
-- [ ] `ScoringEngine`: ΔE-based accuracy % (0–100). Add unit tests.
-- [ ] `DifficultyCurve`: level → grid size, color delta, optional time. Add unit tests.
-- [ ] `ColorGenerator`: seedable grid (one odd tile) + target color generation. Add unit tests.
-- [ ] `DailySeed`: date → stable seed.
-- [ ] `PersistenceStore` protocol + UserDefaults implementation (best scores, streak, stats).
+### Milestone 1 — Core engine (no UI)  ✅ DONE
+- [x] `Color+Hex.swift` in `Core/Extensions/` (hex string → Color).
+- [x] `Color+Lab.swift` in `Core/Extensions/` — sRGB ↔ CIELAB, `deltaE`, `fromLab`. Uses `Color.resolve(in:)` (SwiftUI-only, no UIKit).
+- [x] `ScoringEngine.swift` — ΔE → accuracy % (0–100) + level-bonus score.
+- [x] `DifficultyCurve.swift` — level → gridSize (2–6), colorDelta (30→3), timeLimit (nil until L5).
+- [x] `ColorGenerator.swift` — splitmix64 seeded; `spotOddChallenge` + `matchChallenge`.
+- [x] `DailySeed.swift` — date → stable UInt64 seed (YYYYMMDD).
+- [x] `PersistenceStore.swift` — protocol + `UserDefaultsStore` (best scores, streak, stats).
 
-### Milestone 2 — Navigation shell & Home
-- [ ] `NavigationStack` + `Route` enum.
-- [ ] `HomeView`: title, streak + best-score badges, two mode cards, Daily + Settings entries.
-- [ ] Wire `HomeViewModel` to `PersistenceStore` for displayed stats.
+### Milestone 2 — Navigation shell & Home  ✅ DONE
+- [x] `Route` enum (`spotOdd`, `match`, `daily`, `settings`) in `App/Route.swift`.
+- [x] `HomeView`: dark bg, title, stats row (streak/best score/match %), two mode cards, Daily + Settings entries, `NavigationStack` with stub destinations.
+- [x] `HomeViewModel` (`@Observable`) wired to `PersistenceStore`, refreshes `onAppear`.
 
-### Milestone 3 — Spot the Odd Color
-- [ ] `SpotOddViewModel`: level state, grid generation, tap handling, lives/time, scoring.
-- [ ] `SpotOddView`: responsive `N x N` grid, tap to select, win/lose flow.
-- [ ] Progressive difficulty + haptics (success/failure).
-- [ ] Route to Results on game over; persist best.
+### Milestone 3 — Spot the Odd Color  ✅ DONE
+- [x] `GamePhase` enum (`playing`, `levelComplete`, `gameOver`) in `Core/Models/`.
+- [x] `SpotOddViewModel` (`@Observable`): level, lives (3), score, timer tick, tap handling, persist best on game over.
+- [x] `SpotOddView`: `LazyVGrid` N×N responsive grid, header (level + hearts), timer capsule bar, score, game-over overlay with Play Again / Home.
+- [x] Progressive difficulty via `DifficultyCurve` — grid grows, ΔE shrinks, timer kicks in at L5.
+- [x] Haptics via `.sensoryFeedback(.success/.error)` on correct/wrong tap counters.
+- [x] `HomeView` destination wired: `.spotOdd` → `SpotOddView()`.
 
-### Milestone 4 — Match the Color
+### Milestone 4 — Match the Color  ← **NEXT**
 - [ ] `MatchColorViewModel`: target generation, HSB slider state, submit → accuracy.
 - [ ] `MatchColorView`: target swatch, 3 sliders, live preview, submit.
 - [ ] Result reveal: target vs. guess side-by-side + accuracy %. Haptics.
@@ -203,8 +208,8 @@ colormatch/
 - [ ] Spring animations + reduce-motion handling.
 
 ### Milestone 7 — QA & ship prep
-- [ ] Run on iPhone 17 Pro simulator; verify both modes, daily, persistence across relaunch.
-- [ ] Fix linter/build warnings; ensure unit tests green.
+- [ ] Run on iPhone simulator; verify both modes, daily, persistence across relaunch.
+- [ ] Fix linter/build warnings.
 - [ ] App icon + accent color asset; basic App Store metadata draft.
 
 ### Phase 2 (post-MVP backlog)
