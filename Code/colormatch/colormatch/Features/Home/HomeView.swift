@@ -7,7 +7,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack(path: $path) {
             ZStack {
-                AppColor.background.ignoresSafeArea()
+                GradientBackground(accent: AppColor.accent)
 
                 ScrollView {
                     VStack(spacing: 24) {
@@ -33,7 +33,13 @@ struct HomeView: View {
         VStack(spacing: 6) {
             Text("ColorMatch")
                 .font(AppTypography.display)
-                .foregroundStyle(AppColor.textPrimary)
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [AppColor.accent, AppColor.success],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
             Text("Train your color perception")
                 .font(AppTypography.caption)
                 .foregroundStyle(AppColor.textSecondary)
@@ -104,8 +110,9 @@ struct HomeView: View {
                     .font(.system(size: 26))
                     .foregroundStyle(accent)
                     .frame(width: 54, height: 54)
-                    .background(accent.opacity(0.15))
+                    .background(accent.opacity(0.18))
                     .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .shadow(color: accent.opacity(0.35), radius: 10, x: 0, y: 4)
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
@@ -123,8 +130,18 @@ struct HomeView: View {
                     .foregroundStyle(AppColor.textSecondary)
             }
             .padding(20)
-            .background(AppColor.surface)
+            .background {
+                ZStack {
+                    AppColor.surface
+                    LinearGradient(
+                        colors: [accent.opacity(0.12), .clear],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                }
+            }
             .clipShape(RoundedRectangle(cornerRadius: 20))
+            .shadow(color: accent.opacity(0.15), radius: 12, x: 0, y: 6)
         }
         .buttonStyle(.plain)
     }
@@ -137,11 +154,11 @@ struct HomeView: View {
         case .spotOdd:
             SpotOddView()
         case .match:
-            stub("Match the Color — coming in M4")
+            MatchColorView()
         case .daily:
-            stub("Daily Challenge — coming in M5")
+            DailyChallengeView()
         case .settings:
-            stub("Settings — coming in M6")
+            SettingsView()
         }
     }
 

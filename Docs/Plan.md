@@ -191,21 +191,25 @@ colormatch/
 - [x] Haptics via `.sensoryFeedback(.success/.error)` on correct/wrong tap counters.
 - [x] `HomeView` destination wired: `.spotOdd` → `SpotOddView()`.
 
-### Milestone 4 — Match the Color  ← **NEXT**
-- [ ] `MatchColorViewModel`: target generation, HSB slider state, submit → accuracy.
-- [ ] `MatchColorView`: target swatch, 3 sliders, live preview, submit.
-- [ ] Result reveal: target vs. guess side-by-side + accuracy %. Haptics.
-- [ ] Persist best accuracy.
+### Milestone 4 — Match the Color  ✅ DONE
+- [x] `MatchColorViewModel` (`@Observable`): generates match challenge, HSB slider state, `submit()` → accuracy via `ScoringEngine`, persists best.
+- [x] `MatchColorView`: target swatch + live guess preview, 3 HSB sliders (tinted to current value), submit button → animated result reveal.
+- [x] Result reveal: side-by-side target vs. guess swatches, large accuracy %, color-coded (green ≥90 / blue ≥65 / red <65), "New Best!" badge, Play Again / Home.
+- [x] Haptic on submit via `.sensoryFeedback(.success)`.
+- [x] `HomeView` `.match` destination wired to `MatchColorView()`.
 
-### Milestone 5 — Daily Challenge
-- [ ] `DailyChallengeView` using `DailySeed` (same puzzle per day).
-- [ ] Streak tracking + "already played today" state.
-- [ ] Surface streak on Home.
+### Milestone 5 — Daily Challenge  ✅ DONE
+- [x] `DailyState` enum: `.lobby / .playing / .done(accuracy, isNewBest) / .alreadyPlayed`.
+- [x] `DailyChallengeViewModel`: seeded from `DailySeed.seed()` → level-3 match challenge, checks `lastPlayedDate` on init, `submit()` calls `recordDailyPlay` (updates streak).
+- [x] `DailyChallengeView`: lobby (date + streak badge + play button), playing (sliders), done (rating card + streak badge + "Back to Home"), already-played (checkmark + "Come back tomorrow").
+- [x] Streak already surfaced on HomeView via `HomeViewModel` (was done in M2).
+- [x] `HomeView` `.daily` destination wired to `DailyChallengeView()`.
 
-### Milestone 6 — Results & Settings polish
-- [ ] Shared `ResultView` (score/accuracy, New best!, Play Again, Home).
-- [ ] `SettingsView`: haptics toggle, reduce motion respect, reset stats, about/links.
-- [ ] Spring animations + reduce-motion handling.
+### Milestone 6 — Results & Settings polish  ✅ DONE
+- [x] `SettingsView`: Haptic Feedback toggle (`@AppStorage`), Reset All Stats (confirmation dialog), Version info. Dark card-based layout matching design system.
+- [x] `HomeView` `.settings` destination wired to `SettingsView()`.
+- [x] Reduce-motion: `@Environment(\.accessibilityReduceMotion)` added to `SpotOddView`, `MatchColorView`, `DailyChallengeView`. All `.animation` + `.transition` + `.scaleEffect` calls conditioned on it.
+- [ ] Shared `ResultView` — deferred; each mode has inline result (adequate for MVP).
 
 ### Milestone 7 — QA & ship prep
 - [ ] Run on iPhone simulator; verify both modes, daily, persistence across relaunch.

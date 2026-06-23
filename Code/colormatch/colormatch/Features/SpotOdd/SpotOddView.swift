@@ -4,12 +4,13 @@ import Combine
 struct SpotOddView: View {
     @State private var vm = SpotOddViewModel()
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let ticker = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         ZStack {
-            AppColor.background.ignoresSafeArea()
+            GradientBackground(accent: AppColor.accent)
 
             VStack(spacing: 0) {
                 headerBar
@@ -37,11 +38,11 @@ struct SpotOddView: View {
 
             if vm.phase == .gameOver {
                 gameOverOverlay
-                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.95)))
             }
         }
         .toolbar(.hidden, for: .navigationBar)
-        .animation(.easeInOut(duration: 0.25), value: vm.phase)
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.25), value: vm.phase)
         .sensoryFeedback(.success, trigger: vm.correctTapCount)
         .sensoryFeedback(.error,   trigger: vm.wrongTapCount)
         .onReceive(ticker) { _ in vm.tick() }
@@ -111,17 +112,33 @@ struct SpotOddView: View {
             spacing: 10
         ) {
             ForEach(0..<vm.challenge.grid.count, id: \.self) { i in
+                let isOddAndComplete = vm.phase == .levelComplete && i == vm.challenge.oddIndex
                 vm.challenge.grid[i]
                     .aspectRatio(1, contentMode: .fit)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .overlay {
-                        if vm.phase == .levelComplete && i == vm.challenge.oddIndex {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color.white.opacity(0.12), .clear],
+                                    startPoint: .topLeading,
+                                    endPoint: .center
+                                )
+                            )
+                            .allowsHitTesting(false)
+                    }
+                    .overlay {
+                        if isOddAndComplete {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(AppColor.success, lineWidth: 3)
                         }
                     }
-                    .scaleEffect(vm.phase == .levelComplete && i == vm.challenge.oddIndex ? 1.08 : 1.0)
-                    .animation(.spring(duration: 0.3), value: vm.phase)
+                    .shadow(
+                        color: isOddAndComplete ? AppColor.success.opacity(0.6) : .clear,
+                        radius: 12, x: 0, y: 0
+                    )
+                    .scaleEffect(isOddAndComplete && !reduceMotion ? 1.08 : 1.0)
+                    .animation(reduceMotion ? .none : .spring(duration: 0.3), value: vm.phase)
                     .onTapGesture {
                         if vm.phase == .playing { vm.tapTile(i) }
                     }

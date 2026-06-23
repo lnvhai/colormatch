@@ -17,5 +17,9 @@ struct StatBadge: View {
         .padding(.vertical, 10)
         .background(AppColor.surface)
         .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay {
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(AppColor.divider, lineWidth: 1)
+        }
     }
 }
