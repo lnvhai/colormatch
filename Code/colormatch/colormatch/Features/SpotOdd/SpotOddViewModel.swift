@@ -5,7 +5,6 @@ import Foundation
 final class SpotOddViewModel {
     private(set) var level: Int = 1
     private(set) var challenge: ColorChallenge
-    private(set) var lives: Int = 3
     private(set) var score: Int = 0
     private(set) var phase: GamePhase = .playing
     private(set) var timeRemaining: Double? = nil
@@ -31,8 +30,7 @@ final class SpotOddViewModel {
             phase = .levelComplete
         } else {
             wrongTapCount += 1
-            lives -= 1
-            if lives <= 0 { endGame() }
+            endGame()
         }
     }
 

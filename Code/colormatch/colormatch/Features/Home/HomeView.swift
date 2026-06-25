@@ -14,12 +14,13 @@ struct HomeView: View {
                         header
                         stats
                         modeCards
-                        secondaryRow
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 40)
                     .padding(.bottom, 40)
                 }
+
+                settingsButton
             }
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: Route.self, destination: destination)
@@ -51,7 +52,7 @@ struct HomeView: View {
         HStack(spacing: 12) {
             StatBadge(label: "Streak",     value: vm.dailyStreak > 0 ? "\(vm.dailyStreak)" : "-")
             StatBadge(label: "Best Score", value: vm.spotOddBest > 0 ? "\(vm.spotOddBest)" : "-")
-            StatBadge(label: "Best Match", value: vm.matchBest > 0   ? "\(Int(vm.matchBest.rounded()))%" : "-")
+            StatBadge(label: "Best Match", value: vm.matchSessionBest > 0 ? String(format: "%.1f/50", vm.matchSessionBest) : "-")
         }
         .frame(maxWidth: .infinity)
     }
@@ -75,28 +76,24 @@ struct HomeView: View {
         }
     }
 
-    private var secondaryRow: some View {
-        HStack(spacing: 12) {
-            Button { path.append(.daily) } label: {
-                Label("Daily Challenge", systemImage: "calendar")
-                    .font(AppTypography.body)
-                    .foregroundStyle(AppColor.textPrimary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(AppColor.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+    private var settingsButton: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Button { path.append(.settings) } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 18))
+                        .foregroundStyle(AppColor.textSecondary)
+                        .frame(width: 44, height: 44)
+                        .background(AppColor.surface)
+                        .clipShape(Circle())
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
+            .padding(.horizontal, 20)
+            .padding(.top, 8)
 
-            Button { path.append(.settings) } label: {
-                Image(systemName: "gearshape.fill")
-                    .font(.system(size: 18))
-                    .foregroundStyle(AppColor.textSecondary)
-                    .frame(width: 52, height: 52)
-                    .background(AppColor.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-            }
-            .buttonStyle(.plain)
+            Spacer()
         }
     }
 

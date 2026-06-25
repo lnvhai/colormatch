@@ -3,12 +3,14 @@ import Foundation
 protocol PersistenceStore: AnyObject {
     var spotOddBest: Int { get }
     var matchBest: Double { get }
+    var matchSessionBest: Double { get }
     var dailyStreak: Int { get }
     var lastPlayedDate: Date? { get }
     var totalGames: Int { get }
 
     func saveSpotOddBest(_ score: Int)
     func saveMatchBest(_ accuracy: Double)
+    func saveMatchSessionBest(_ score: Double)
     func recordDailyPlay(date: Date)
     func incrementTotalGames()
     func resetAll()
@@ -16,7 +18,7 @@ protocol PersistenceStore: AnyObject {
 
 final class UserDefaultsStore: PersistenceStore {
     private enum Key: String, CaseIterable {
-        case spotOddBest, matchBest, dailyStreak, lastPlayedDate, totalGames
+        case spotOddBest, matchBest, matchSessionBest, dailyStreak, lastPlayedDate, totalGames
     }
 
     private let defaults: UserDefaults
@@ -27,6 +29,7 @@ final class UserDefaultsStore: PersistenceStore {
 
     var spotOddBest: Int      { defaults.integer(forKey: Key.spotOddBest.rawValue) }
     var matchBest: Double     { defaults.double(forKey: Key.matchBest.rawValue) }
+    var matchSessionBest: Double { defaults.double(forKey: Key.matchSessionBest.rawValue) }
     var dailyStreak: Int      { defaults.integer(forKey: Key.dailyStreak.rawValue) }
     var totalGames: Int       { defaults.integer(forKey: Key.totalGames.rawValue) }
     var lastPlayedDate: Date? { defaults.object(forKey: Key.lastPlayedDate.rawValue) as? Date }
@@ -39,6 +42,11 @@ final class UserDefaultsStore: PersistenceStore {
     func saveMatchBest(_ accuracy: Double) {
         guard accuracy > matchBest else { return }
         defaults.set(accuracy, forKey: Key.matchBest.rawValue)
+    }
+
+    func saveMatchSessionBest(_ score: Double) {
+        guard score > matchSessionBest else { return }
+        defaults.set(score, forKey: Key.matchSessionBest.rawValue)
     }
 
     func recordDailyPlay(date: Date = .now) {

@@ -3,6 +3,7 @@ import Combine
 
 struct SpotOddView: View {
     @State private var vm = SpotOddViewModel()
+    @State private var showGameOverUI = false
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -36,7 +37,7 @@ struct SpotOddView: View {
                     .padding(.bottom, 36)
             }
 
-            if vm.phase == .gameOver {
+            if showGameOverUI {
                 gameOverOverlay
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.95)))
             }
@@ -46,11 +47,18 @@ struct SpotOddView: View {
         .sensoryFeedback(.success, trigger: vm.correctTapCount)
         .sensoryFeedback(.error,   trigger: vm.wrongTapCount)
         .onReceive(ticker) { _ in vm.tick() }
+        .onAppear {
+            InterstitialAdManager.shared.preload()
+        }
         .onChange(of: vm.phase) { _, phase in
             if phase == .levelComplete {
                 Task {
                     try? await Task.sleep(for: .milliseconds(650))
                     vm.advanceToNextLevel()
+                }
+            } else if phase == .gameOver {
+                InterstitialAdManager.shared.showIfAvailable {
+                    showGameOverUI = true
                 }
             }
         }
@@ -74,13 +82,9 @@ struct SpotOddView: View {
 
             Spacer()
 
-            HStack(spacing: 5) {
-                ForEach(0..<3) { i in
-                    Image(systemName: i < vm.lives ? "heart.fill" : "heart")
-                        .font(.system(size: 16))
-                        .foregroundStyle(i < vm.lives ? AppColor.failure : AppColor.divider)
-                }
-            }
+            Image(systemName: "chevron.left")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(.clear)
         }
     }
 
@@ -177,6 +181,7 @@ struct SpotOddView: View {
 
                 VStack(spacing: 12) {
                     PrimaryButton(title: "Play Again") {
+                        showGameOverUI = false
                         vm = SpotOddViewModel()
                     }
                     Button("Home") { dismiss() }

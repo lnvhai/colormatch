@@ -1,12 +1,89 @@
 import SwiftUI
 
+enum MatchRoundRating: Equatable {
+    case perfect
+    case excellent
+    case great
+    case good
+    case almost
+    case failed
+
+    init(roundScore: Double) {
+        switch roundScore {
+        case 9.5...: self = .perfect
+        case 8.5...: self = .excellent
+        case 7.0...: self = .great
+        case 5.5...: self = .good
+        case 4.0...: self = .almost
+        default:    self = .failed
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .perfect:
+            "You've got photographic memory. Are you even human?"
+        case .excellent:
+            "Your eyes are razor sharp. Most people can't get this close."
+        case .great:
+            "Solid color instincts. You've clearly got a good eye."
+        case .good:
+            "Not bad. Not great. Somewhere in the middle."
+        case .almost:
+            "You were in the ballpark but the colors disagree."
+        case .failed:
+            "Way off. Did you even look at the target?"
+        }
+    }
+
+    var isFailed: Bool { self == .failed }
+}
+
+enum MatchSessionRating: Equatable {
+    case perfect
+    case excellent
+    case great
+    case good
+    case almost
+    case failed
+
+    init(totalScore: Double) {
+        switch totalScore {
+        case 47.5...: self = .perfect
+        case 42.5...: self = .excellent
+        case 37.5...: self = .great
+        case 27.5...: self = .good
+        case 20.0...: self = .almost
+        default:    self = .failed
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .perfect:
+            "Flawless session. You're basically a color-calibrated display."
+        case .excellent:
+            "Legitimately impressive. Your eyes work."
+        case .great:
+            "Solid session. You've clearly got a good eye."
+        case .good:
+            "Decent run. A little more focus and you'll crush it."
+        case .almost:
+            "Some hits, some misses. Keep training."
+        case .failed:
+            "Rough session. The colors won this round."
+        }
+    }
+}
+
+// Legacy rating used by Daily Challenge.
 enum MatchRating: Equatable {
-    case perfect    // ≥ 95
-    case excellent  // ≥ 85
-    case great      // ≥ 70
-    case good       // ≥ 55
-    case almost     // ≥ 40
-    case failed     // < 40
+    case perfect
+    case excellent
+    case great
+    case good
+    case almost
+    case failed
 
     init(accuracy: Double) {
         switch accuracy {
