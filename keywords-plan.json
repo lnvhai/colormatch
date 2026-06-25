@@ -1,0 +1,67 @@
+{
+  "appId": "6783224880",
+  "storefrontId": 143441,
+  "competitors": [
+    "6762853449",
+    "6761573298"
+  ],
+  "plan": {
+    "title": "ColorMatch",
+    "subtitle": "Spot & Match Colors",
+    "keywords": "dialed,color,matching,games,guess,game,one,colour,spot,odd,puzzle,hue,vision"
+  },
+  "final": {
+    "title": "ColorMatch",
+    "subtitle": "Spot & Match Colors",
+    "keywords": "dialed,color,matching,games,guess,game,one,colour,spot,odd,puzzle,hue,vision"
+  },
+  "allocation": {
+    "titleLimit": 30,
+    "subtitleLimit": 30,
+    "keywordsLimit": 100,
+    "titleUsed": 10,
+    "subtitleUsed": 19,
+    "keywordsUsed": 76
+  },
+  "discoveredKeywords": [
+    { "text": "dialed gg", "source": "competitors", "popularity": 42, "intent": "competitor_gap", "priority": 1 },
+    { "text": "color matching games", "source": "competitors", "popularity": 28, "intent": "competitor_gap", "priority": 12 },
+    { "text": "color guess", "source": "competitors", "popularity": 27, "intent": "competitor_gap", "priority": 11 },
+    { "text": "match the color", "source": "competitors", "popularity": 26, "intent": "competitor_gap", "priority": 4 },
+    { "text": "color match game", "source": "competitors", "popularity": 22, "intent": "competitor_gap", "priority": 2 },
+    { "text": "color matching", "source": "competitors", "popularity": 18, "intent": "competitor_gap", "priority": 6 },
+    { "text": "match colors", "source": "competitors", "popularity": 16, "intent": "competitor_gap", "priority": 10 },
+    { "text": "one color", "source": "competitors", "popularity": 9, "intent": "competitor_gap", "priority": 3 },
+    { "text": "match color", "source": "competitors", "popularity": 9, "intent": "competitor_gap", "priority": 7 },
+    { "text": "colour match game", "source": "competitors", "popularity": 9, "intent": "competitor_gap", "priority": 9 },
+    { "text": "dialed", "source": "competitors", "popularity": 8, "intent": "competitor_gap", "priority": 8 },
+    { "text": "match the colour", "source": "competitors", "popularity": 6, "intent": "competitor_gap", "priority": 5 }
+  ],
+  "keywordIntents": [
+    { "keyword": "dialed gg", "intent": "competitor_gap", "source": "competitors", "targetField": "keywords", "priority": 1, "popularity": 42, "rationale": "Top competitor brand term; dialed token in keywords field" },
+    { "keyword": "color match game", "intent": "competitor_gap", "source": "competitors", "targetField": "subtitle", "priority": 2, "popularity": 22, "rationale": "One Color ranks #1; color+game tokens cover phrase" },
+    { "keyword": "match colors", "intent": "competitor_gap", "source": "competitors", "targetField": "subtitle", "priority": 10, "popularity": 16, "rationale": "Subtitle Spot & Match Colors directly targets phrase" },
+    { "keyword": "color matching games", "intent": "competitor_gap", "source": "competitors", "targetField": "keywords", "priority": 12, "popularity": 28, "rationale": "High-popularity category term via color,matching,games tokens" },
+    { "keyword": "color guess", "intent": "competitor_gap", "source": "competitors", "targetField": "keywords", "priority": 11, "popularity": 27, "rationale": "Dialed GG ranks #19; color+guess tokens" },
+    { "keyword": "spot the odd color", "intent": "feature", "source": "extractor", "targetField": "keywords", "priority": 13, "popularity": 0, "rationale": "Unique differentiator; spot+odd tokens" }
+  ],
+  "sources": {
+    "extractor": [
+      "color match", "color puzzle", "color game", "color perception",
+      "spot the odd color", "color matching", "color vision", "hue match",
+      "color challenge", "match the color", "spot the difference",
+      "color slider", "daily challenge", "eye training", "minimalist game"
+    ],
+    "astro": [],
+    "competitors": [
+      "dialed gg", "dialed", "color guess", "color match game", "one color",
+      "match the color", "match the colour", "color matching", "match color",
+      "colour match game", "match colors", "color matching games"
+    ]
+  },
+  "degradedSources": ["astro"],
+  "createdAt": "2026-06-25T01:19:04.709Z",
+  "updatedAt": "2026-06-25T01:19:27.072Z",
+  "generatedAt": "2026-06-25T01:19:04.709Z",
+  "deliveredAt": "2026-06-25T01:19:27.072Z"
+}
