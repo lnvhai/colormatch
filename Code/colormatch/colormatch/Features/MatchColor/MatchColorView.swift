@@ -310,6 +310,16 @@ struct MatchColorView: View {
                     vm.restartSession()
                 }
                 .padding(.horizontal, 20)
+
+                Button { dismiss() } label: {
+                    Text("Home")
+                        .font(AppTypography.body)
+                        .foregroundStyle(AppColor.textSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 20)
                 .padding(.bottom, 40)
             }
         }

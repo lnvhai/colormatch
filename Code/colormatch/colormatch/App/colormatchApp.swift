@@ -1,8 +1,10 @@
 import SwiftUI
+import AppTrackingTransparency
+
 
 @main
 struct colormatchApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+//    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {
         WindowGroup {
@@ -25,9 +27,17 @@ private struct AppRootView: View {
                 case .active where wasInBackground:
                     wasInBackground = false
                     AppOpenAdManager.shared.showAdIfAvailable()
+                case .active:
+                    requestIDFA()
                 default:
                     break
                 }
             }
+    }
+    
+    func requestIDFA(){
+        ATTrackingManager.requestTrackingAuthorization { status in
+            
+        }
     }
 }

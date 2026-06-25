@@ -35,7 +35,7 @@ struct SettingsView: View {
                         settingsSection(title: "About") {
                             infoRow("Version", value: appVersion)
                             divider
-                            infoRow("ColorMatch", value: "Made with care")
+                            infoRow("Color Match", value: "Made with care")
                         }
                     }
                     .padding(.horizontal, 20)

@@ -1,6 +1,6 @@
 Can you spot the odd color? Can you match the hue?
 
-ColorMatch is a minimalist color perception game that combines two addictive challenges in one sleek dark app.
+Color Match is a minimalist color perception game that combines two addictive challenges in one sleek dark app.
 
 SPOT THE ODD COLOR
 Scan the grid and tap the one tile that's different. Grids grow and color differences shrink as you advance — only sharp eyes survive.
@@ -16,4 +16,4 @@ WHY YOU'LL LOVE IT
 • Offline play — no account required
 • Track your streak, best scores, and match precision
 
-Whether you enjoyed Dialed GG, One Color, or any color guess puzzle, ColorMatch brings both mechanics together. Train your vision, beat your best, and see how dialed in your color sense really is.
+Color Match brings both mechanics together. Train your vision, beat your best, and see how dialed in your color sense really is.

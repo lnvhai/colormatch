@@ -32,7 +32,7 @@ struct HomeView: View {
 
     private var header: some View {
         VStack(spacing: 6) {
-            Text("ColorMatch")
+            Text("Color Match")
                 .font(AppTypography.display)
                 .foregroundStyle(
                     LinearGradient(
